@@ -133,6 +133,24 @@ nodeSelector:
   selector:
     reportportal: true
 
+# persistence configuration for api service
+persistence:
+  api:
+    enabled: true
+    ## If true will use an existing PVC instead of creating one
+    # useExisting: false
+    spec:
+      ## Persistent Volume Storage Class
+      ## If defined, storageClassName: <storageClass>
+      ## If set to "-", storageClassName: "", which disables dynamic provisioning
+      ## If undefined (the default) or set to null, no storageClassName spec is
+      ##   set, choosing the default provisioner.  (gp2 on AWS, standard on
+      ##   GKE, AWS & OpenStack)
+      ##
+      # storageClass: "-"
+      accessMode: ReadWriteMany
+      capacity:
+        storage: 20Gi
 
 # RBAC is required for service-index in order to collect status/info over all services
 rbac:

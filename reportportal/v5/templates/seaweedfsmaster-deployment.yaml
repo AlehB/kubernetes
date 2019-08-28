@@ -1,0 +1,29 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: seafweedfsmaster
+spec:
+  template:
+    metadata:
+      labels:
+        app: haystack
+    spec:
+      containers:
+      - name: weedmaster
+        image: chrislusf/seaweedfs
+        args: ["master", "-port", "9333", "-mdir", "/var/containerdata/haystack/master", "-ip", "haystackservice"]
+        ports:
+        - containerPort: 9333
+        {{ if .Values.persistence.api.enabled -}}
+        volumeMounts:
+        - mountPath: /data/storage
+          name: reportportal-api
+      volumes:
+      - name: reportportal-api
+      {{- if .Values.persistence.api.enabled }}
+        persistentVolumeClaim:
+          claimName: reportportal-api
+      {{- else }}
+        emptyDir: {}
+      {{- end }}
+      {{- end }}

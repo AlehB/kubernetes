@@ -4,7 +4,7 @@ metadata:
   name: api
   labels: {{ include "labels" . | indent 4 }}
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       component: reportportal-api
@@ -19,6 +19,12 @@ spec:
           value: "info"
         - name: "JAVA_OPTS"
           value: "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/tmp  -Dcom.sun.management.jmxremote.rmi.port=12349 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.local.only=false  -Dcom.sun.management.jmxremote.port=9010 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=10.6.128.241"
+        - name: RP_BINARYSTORE_TYPE
+          value: "seaweed"
+        - name: RP_BINARYSTORE_MASTER_HOST
+          value: "haystackservice"
+        - name: RP_BINARYSTORE_MASTER_PORT
+          value: "9333"
         - name: RP_AMQP_HOST
           value: "{{ .Values.rabbitmq.endpoint.address }}"
         - name: RP_AMQP_PORT

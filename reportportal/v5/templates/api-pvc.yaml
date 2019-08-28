@@ -1,0 +1,20 @@
+{{- if and (.Values.persistence.api.enabled) (not .Values.persistence.api.useExisting) }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: reportportal-api
+  labels: {{ include "labels" . | indent 4 }}
+spec:
+  accessModes:
+  - {{ .Values.persistence.api.spec.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.api.spec.capacity.storage }}
+{{- if .Values.persistence.api.spec.storageClass }}
+{{- if (eq "-" .Values.persistence.api.spec.storageClass) }}
+  storageClassName: ""
+{{- else }}
+  storageClassName: "{{ .Values.persistence.api.spec.storageClass }}"
+{{- end }}
+{{- end }}
+{{- end }}
